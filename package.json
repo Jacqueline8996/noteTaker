@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Jacqueline8996/noteTaker/issues"
   },
-  "homepage": "https://github.com/Jacqueline8996/noteTaker#readme"
+  "homepage": "https://github.com/Jacqueline8996/noteTaker#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
