@@ -49,19 +49,18 @@ module.exports = function(app) {
 
     });
   
-    app.get("/api/note/:id", function(req, res) {
-      
-        var chosen = req.params.character;
-      
-        console.log(chosen);
-      
-        for (var i = 0; i < characters.length; i++) {
-          if (chosen === characters[i].routeName) {
-            return res.json(characters[i]);
-          }
-        }
-      
-        return res.json(false);
+    app.delete("/api/note/:id", function(req, res) {
+
+        let id = req.params.id;
+        console.log(id);
+
+        let deletNote = JSON.parse(fs.readFileSync(mynotes));
+
+        //sort the info :
+        let deltedList = deletNote.filter((note) => note.id !== id);
+
+        //writes the notes 
+        fs.writeFileSync(mynotes,JSON.stringify(deltedList));
     });
   
    
