@@ -2,6 +2,7 @@
 var mynotes = require("../db/db.json");
 const fs =require("fs")
 
+
 module.exports = function(app) {
   
     // get request for the notes
@@ -18,6 +19,7 @@ module.exports = function(app) {
     // post notes 
   
     app.post("/api/notes", function(req, res) {
+       let pastNote = fs.readFileSync(mynotes)
 
         console.log("my notes", req.body);
         //stores the notes in an object 
@@ -25,10 +27,14 @@ module.exports = function(app) {
           //adds in title to the object based on what was entered 
           title:req.body.title,
           //adds in title to the object based on what was entered 
-          Text:req.body.Text
+          Text:req.body.Text,
+          //gives note a unique number
+          id: pastNote.length+1 
+
+
         };
         
-        let pastNote = fs.readFileSync(mynotes)
+        // let pastNote = fs.readFileSync(mynotes)
         pastNote.push(addNotes)
 
         console.log("my notes", addNotes);
@@ -56,8 +62,8 @@ module.exports = function(app) {
         }
       
         return res.json(false);
-      });
+    });
   
    
-  };
+};
   
