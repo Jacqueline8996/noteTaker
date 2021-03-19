@@ -1,5 +1,6 @@
 //require the old data
 var mynotes = require("../db/db.json");
+const fs =require("fs")
 
 module.exports = function(app) {
   
@@ -16,7 +17,7 @@ module.exports = function(app) {
    
         var newNote = req.body;
         mynotes.push(newNote);
-        res.json(newNote);
+        res.json(mynotes);
     });
   
     app.get("/api/note/:id", function(req, res) {
