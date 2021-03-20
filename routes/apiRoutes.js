@@ -2,8 +2,9 @@
 var mynotes = require("../db/db.json");
 //connects to the the database
 var dataBase ='./db/db.json';
-let oldNote = fs.readFileSync(dataBase)
-const fs =require("fs")
+const fs =require("fs");
+let oldNote = fs.readFileSync(dataBase);
+// let parseNote = JSON.parse(fs.readFileSync(dataBase));
 
 
 module.exports = function(app) {
@@ -22,6 +23,7 @@ module.exports = function(app) {
   
     app.post("/api/notes", function(req, res) {
       //  let pastNote = fs.readFileSync(JSON.stringify(mynotes))
+      let parseNote = JSON.parse(fs.readFileSync(dataBase));
 
         console.log("my notes", req.body);
         //stores the notes in an object 
@@ -31,39 +33,42 @@ module.exports = function(app) {
           //adds in title to the object based on what was entered 
           Text:req.body.Text,
           //gives note a unique number
-          id: pastNote.length+1 
-
-
+          id: oldNote.length +1 
         };
         
+        console.log("my database", parseNote);
+        
         // let pastNote = fs.readFileSync(mynotes)
-        oldNote.push(addNotes)
+        parseNote.push(addNotes);
+        console.log("my database", parseNote);
 
-        console.log("my notes", addNotes);
         // console.log("my notes", pastNote);
 
-    //     //writes the notes 
-    //     fs.writeFileSync(mynotes,JSON.stringify(pastNote));
-    //     // mynotes.push(newNote);
+        //writes the notes 
+        fs.writeFileSync(dataBase, JSON.stringify(parseNote));
+        // mynotes.push(newNote);
+        console.log("my old notes", oldNote);
 
-    //     // return res.json(mynotes,newNote);
+        res.json(addNotes);
 
 
     });
   
-    // app.delete("/api/note/:id", function(req, res) {
+    app.delete("/api/note/:id", function(req, res) {
 
-    //     let id = req.params.id;
-    //     console.log(id);
+        let id = req.params.id;
+        console.log(id);
+        
+        let parseNoteDel = JSON.parse(fs.readFileSync(dataBase));
 
-    //     let deletNote = JSON.parse(fs.readFileSync(mynotes));
+        //sort the info :
+        let newDel = parseNoteDel.filter((note) => note.id !== id);
 
-    //     //sort the info :
-    //     let deltedList = deletNote.filter((note) => note.id !== id);
+        //writes the notes 
+        fs.writeFileSync(dataBase,JSON.stringify(newDel));
+        res.json({ ok: true });
 
-    //     //writes the notes 
-    //     fs.writeFileSync(mynotes,JSON.stringify(deltedList));
-    // });
+    });
   
    
 };
