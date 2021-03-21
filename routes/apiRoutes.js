@@ -4,14 +4,15 @@ var mynotes = require("../db/db.json");
 var dataBase ='./db/db.json';
 const fs =require("fs");
 let oldNote = fs.readFileSync(dataBase);
-//constants needed in order to create a ID
-let alpha = ["AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"];
-let number =["0123456789"];
-let alphaNum = [alpha,number];
 
 //makes unique ID 
 function makeID(){
+  //paramater needed in order to create a ID
+  let alpha = ["AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"];
+  let number =["0123456789"];
+  let alphaNum = [alpha,number];
   let id = ""
+  //creates an 8 digit number 
   for (i = 0; i < 8; i++) {
     let ranAlphaNum = Math.floor(Math.random() * 2)
     let ranAlpha = Math.floor(Math.random() * 51)
@@ -33,65 +34,51 @@ module.exports = function(app) {
   
     // get request for the notes that have been stored
     app.get("/api/notes", function(req, res) {
-
       //get old notes 
-        // let oldNote = fs.readFileSync(dataBase)
-        console.log("my old notes", oldNote)
-        return res.json(JSON.parse(oldNote));
+      // let oldNote = fs.readFileSync(dataBase)
+      console.log("my old notes", oldNote)
+      return res.json(JSON.parse(oldNote));
     });
   
-
     // post notes 
   
     app.post("/api/notes", function(req, res) {
       //  let pastNote = fs.readFileSync(JSON.stringify(mynotes))
       let parseNote = JSON.parse(fs.readFileSync(dataBase));
-      // let myID = makeID();
-      // console.log("my id is ", myID)
-
-      console.log("my notes", req.body);
       //stores the notes in an object 
       //adds in title to the object based on what was entered 
       //adds in title to the object based on what was entered 
-        //gives note a unique number
+      //gives note a unique number from make ID 
       let addNotes = {
         title:req.body.title,
         text:req.body.text,
         id: makeID() 
       };
-        
-      console.log("my database", parseNote);
-      
+
       // let pastNote = fs.readFileSync(mynotes)
       parseNote.push(addNotes);
       console.log("my database", parseNote);
 
-      // console.log("my notes", pastNote);
       //writes the notes 
       fs.writeFileSync(dataBase, JSON.stringify(parseNote));
-      // mynotes.push(newNote);
-      console.log("my old notes", oldNote);
       res.json(addNotes);
 
-
     });
   
-    app.delete("/api/note/:id", function(req, res) {
+    //Deletes the notes via there ID
+    app.delete("/api/notes/:id", function (req, res) {
+      //gets the note id that willl be deleted
+      let id = req.params.id;
+      //parse the the database so you can use it 
+      const notesDel = JSON.parse(fs.readFileSync(dataBase))
+      
+      //make the new notes array
+      const newNoteArr = notesDel.filter((note) => note.id !== id)
+      //writes the new database after it has been fileted out
+      fs.writeFileSync(dataBase, JSON.stringify(newNoteArr))
+      res.json({ ok: true });
+  });  
 
-        let id = req.params.id;
-        console.log(id);
-        
-        let parseNoteDel = JSON.parse(fs.readFileSync(dataBase));
 
-        //sort the info :
-        let newDel = parseNoteDel.filter((note) => note.id !== id);
-
-        //writes the notes 
-        fs.writeFileSync(dataBase,JSON.stringify(newDel));
-        res.json({ ok: true });
-
-    });
-  
-   
 };
   
