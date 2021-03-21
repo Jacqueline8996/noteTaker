@@ -3,7 +3,7 @@ var mynotes = require("../db/db.json");
 //connects to the the database
 var dataBase ='./db/db.json';
 const fs =require("fs");
-let oldNote = fs.readFileSync(dataBase);
+// let oldNote = fs.readFileSync(dataBase);
 // let parseNote = JSON.parse(fs.readFileSync(dataBase));
 
 
@@ -12,10 +12,11 @@ module.exports = function(app) {
     // get request for the notes that have been stored
     app.get("/api/notes", function(req, res) {
 
+      let oldNote = JSON.parse(fs.readFileSync(dataBase));
       //get old notes 
         // let oldNote = fs.readFileSync(dataBase)
         console.log("my old notes", oldNote)
-        return res.json(JSON.parse(oldNote));
+        return res.json(oldNote);
     });
   
 
@@ -27,13 +28,13 @@ module.exports = function(app) {
 
         console.log("my notes", req.body);
         //stores the notes in an object 
+        //adds in title to the object based on what was entered 
+        //adds in title to the object based on what was entered 
+         //gives note a unique number
         let addNotes = {
-          //adds in title to the object based on what was entered 
           title:req.body.title,
-          //adds in title to the object based on what was entered 
-          Text:req.body.Text,
-          //gives note a unique number
-          id: oldNote.length +1 
+          text:req.body.text,
+          id: parseNote.length +1 
         };
         
         console.log("my database", parseNote);
@@ -49,7 +50,7 @@ module.exports = function(app) {
         // mynotes.push(newNote);
         console.log("my old notes", oldNote);
 
-        res.json(addNotes);
+        res.json(JSON.stringify(addNotes));
 
 
     });
