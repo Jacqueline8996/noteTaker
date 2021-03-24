@@ -34,10 +34,10 @@ module.exports = function(app) {
   
     // get request for the notes that have been stored
     app.get("/api/notes", function(req, res) {
+      let oldNotes = fs.readFileSync(dataBase);
       //get old notes 
       // let oldNote = fs.readFileSync(dataBase)
-      console.log("my old notes", oldNote)
-      return res.json(JSON.parse(oldNote));
+      res.json(JSON.parse(oldNotes));
     });
   
     // post notes 
@@ -62,6 +62,8 @@ module.exports = function(app) {
       //writes the notes 
       fs.writeFileSync(dataBase, JSON.stringify(parseNote));
       res.json(addNotes);
+      
+     
 
     });
   
