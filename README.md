@@ -18,11 +18,11 @@ delete the notes once they do.
 
 # ProjectUsage
 * To create a HTML page base on User input.
-Starting Screen
+* * Starting Screen
 ![alt text](/public/assets/images/mainScreen.png)
-Notes Starting Notes
+* * Notes Starting Notes
 ![alt text](/public/assets/images/startingNotes.png)
-Saved Notes 
+* * Saved Notes 
 ![alt text](/public/assets/images/savedNotes.png)
 
 # ProjectContributors
